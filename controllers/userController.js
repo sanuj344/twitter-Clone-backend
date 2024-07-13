@@ -63,7 +63,10 @@ export const Login = async (req, res) => {
             userId: user._id
         }
         const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "1d" });
-        return res.status(201).cookie("token", token, { expiresIn: "1d", httpOnly: true }).json({
+        return res.status(201).cookie("token", token, { expiresIn: "1d", httpOnly: true,
+            sameSite: 'None',
+            secure:true
+         }).json({
             message: `Welcome back ${user.name}`,
             user,
             success: true
@@ -73,7 +76,10 @@ export const Login = async (req, res) => {
     }
 }
 export const logout = (req, res) => {
-    return res.cookie("token", "", { expiresIn: new Date(Date.now()) }).json({
+    return res.cookie("token", "", { expiresIn: new Date(Date.now()),
+        sameSite: 'None',
+        secure:true
+     }).json({
         message: "user logged out successfully.",
         success: true
     })
